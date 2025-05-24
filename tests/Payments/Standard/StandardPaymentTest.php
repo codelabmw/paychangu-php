@@ -14,8 +14,6 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 
-beforeEach()->only();
-
 it('extends base payment', function () {
     // Arrange
     $client = new Client('secret');
