@@ -24,15 +24,16 @@
         "guzzlehttp/guzzle": "^7.9"
     },
     "require-dev": {
-        "phpstan/phpstan": "^2.1.14",
-        "phpstan/phpstan-phpunit": "^2.0.6",
-        "phpstan/phpstan-deprecation-rules": "^2.0.2",
         "laravel/pint": "^1.22.1",
-        "rector/rector": "^2.0.15",
         "pestphp/pest": "^3.8.2",
+        "pestphp/pest-plugin-arch": "^3.1.1",
         "pestphp/pest-plugin-faker": "^3.0",
         "pestphp/pest-plugin-watch": "^3.0",
-        "pestphp/pest-plugin-arch": "^3.1.1"
+        "phpstan/phpstan": "^2.1.14",
+        "phpstan/phpstan-deprecation-rules": "^2.0.2",
+        "phpstan/phpstan-phpunit": "^2.0.6",
+        "rector/rector": "^2.0.15",
+        "symfony/var-dumper": "^7.2"
     },
     "scripts": {
         "refactor": "rector",

@@ -53,7 +53,14 @@ class StandardPayment extends PaymentHandler
      */
     public function retrieve(string $reference): PendingPayment
     {
-        //
+        $response = $this->client->get('/verify-paymen/' . $reference);
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        if ($response->getStatusCode() !== 200 || $data['status'] !== 'success') {
+            throw new PaychanguException($data['message'], $response->getStatusCode());
+        }
+
+        return PendingPayment::fromArray($data);
     }
 
     /**
