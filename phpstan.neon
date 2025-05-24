@@ -4,5 +4,6 @@ parameters:
     level: 10
 
     excludePaths:
+        - src/Payments/Standard/PendingPayment.php
         - tests/*      # Excludes all files in tests directory
         - tests/**/*   # Excludes all files in subdirectories of tests

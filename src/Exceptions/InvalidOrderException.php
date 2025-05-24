@@ -1,13 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Codelabmw\Paychangu\Exceptions;
 
 use Exception;
 
-class InvalidOrderException extends Exception
+final class InvalidOrderException extends Exception
 {
-    public function __construct()
+    /**
+     * Creates a new instance of the InvalidOrderException class.
+     *
+     * @param  string  $message  The error message.
+     */
+    public function __construct(string $message = 'Invalid order instance given')
     {
-        parent::__construct('Invalid order instance given');
+        parent::__construct($message);
     }
 }

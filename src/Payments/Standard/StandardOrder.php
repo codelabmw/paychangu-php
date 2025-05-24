@@ -1,26 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Codelabmw\Paychangu\Payments\Standard;
 
+use Codelabmw\Paychangu\Customer;
 use Codelabmw\Paychangu\Enums\Currency;
 use Codelabmw\Paychangu\Order;
-use Codelabmw\Paychangu\Customer;
 
-class StandardOrder extends Order
+final class StandardOrder extends Order
 {
     /**
      * Creates a new instance of the StandardOrder class.
      *
-     * @param int $amount The amount of the order.
-     * @param Currency $currency The currency of the order.
-     * @param string $reference The reference of the order.
-     * @param string $callbackUrl The callback URL of the order.
-     * @param string $returnUrl The return URL of the order.
-     * @param string|null $title The title of the order.
-     * @param string|null $description The description of the order.
-     * @param Customer|null $customer The customer of the order.
-     * @param array|null $meta The meta of the order.
-     * @param string|null $uuid The UUID of the order.
+     * @param  int  $amount  The amount of the order.
+     * @param  Currency  $currency  The currency of the order.
+     * @param  string  $reference  The reference of the order.
+     * @param  string  $callbackUrl  The callback URL of the order.
+     * @param  string  $returnUrl  The return URL of the order.
+     * @param  string|null  $title  The title of the order.
+     * @param  string|null  $description  The description of the order.
+     * @param  Customer|null  $customer  The customer of the order.
+     * @param  array<string, mixed>|null  $meta  The meta of the order.
+     * @param  string|null  $uuid  The UUID of the order.
      */
     public function __construct(
         public readonly int $amount,

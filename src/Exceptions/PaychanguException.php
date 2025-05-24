@@ -6,15 +6,15 @@ namespace Codelabmw\Paychangu\Exceptions;
 
 use Exception;
 
-class PaychanguException extends Exception
+final class PaychanguException extends Exception
 {
     /**
      * Create a new PaychanguException instance.
      *
-     * @param string $message The error message.
-     * @param int $statusCode The HTTP status code.
+     * @param  string  $message  The error message.
+     * @param  int  $statusCode  The HTTP status code.
      */
-    public function __construct(string $message, private int $statusCode = 0)
+    public function __construct(string $message, private readonly int $statusCode = 0)
     {
         parent::__construct($message);
     }

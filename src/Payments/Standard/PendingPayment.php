@@ -1,36 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Codelabmw\Paychangu\Payments\Standard;
 
+use Codelabmw\Paychangu\Customer;
 use Codelabmw\Paychangu\Enums\Currency;
 use Codelabmw\Paychangu\Payment;
 use Codelabmw\Paychangu\Payments\Standard\ValueObjects\Authorization;
-use Codelabmw\Paychangu\Customer;
 use Codelabmw\Paychangu\Payments\Standard\ValueObjects\Customization;
 use Codelabmw\Paychangu\Payments\Standard\ValueObjects\Log;
 
 final class PendingPayment extends Payment
 {
     /**
-     * @param string $event The event type (e.g., 'checkout.session:created' or 'checkout.payment')
-     * @param string $reference The transaction reference
-     * @param Currency $currency The currency of the payment
-     * @param int $amount The amount in the smallest currency unit (e.g., tambala for MWK)
-     * @param string $mode The mode of the payment (e.g., 'sandbox' or 'live')
-     * @param string $status The status of the payment (e.g., 'pending' or 'success')
-     * @param string|null $checkoutUrl The URL for the checkout page (for pending payments)
-     * @param string|null $eventType The type of the event (for completed payments)
-     * @param string|null $type The type of payment (for completed payments)
-     * @param int|null $numberOfAttempts Number of payment attempts (for completed payments)
-     * @param string|null $paymentReference The payment reference (for completed payments)
-     * @param int|null $charges The charges applied to the payment (for completed payments)
-     * @param array|null $meta Additional metadata (for completed payments)
-     * @param Authorization|null $authorization Authorization details (for completed payments)
-     * @param Customer|null $customer Customer details (for completed payments)
-     * @param Customization|null $customization Customization details (for completed payments)
-     * @param array|null $logs Array of Log objects (for completed payments)
-     * @param string|null $createdAt When the payment was created (for completed payments)
-     * @param string|null $updatedAt When the payment was last updated (for completed payments)
+     * @param  string  $event  The event type (e.g., 'checkout.session:created' or 'checkout.payment')
+     * @param  string  $reference  The transaction reference
+     * @param  Currency  $currency  The currency of the payment
+     * @param  int  $amount  The amount in the smallest currency unit (e.g., tambala for MWK)
+     * @param  string  $mode  The mode of the payment (e.g., 'sandbox' or 'live')
+     * @param  string  $status  The status of the payment (e.g., 'pending' or 'success')
+     * @param  string|null  $checkoutUrl  The URL for the checkout page (for pending payments)
+     * @param  string|null  $eventType  The type of the event (for completed payments)
+     * @param  string|null  $type  The type of payment (for completed payments)
+     * @param  int|null  $numberOfAttempts  Number of payment attempts (for completed payments)
+     * @param  string|null  $paymentReference  The payment reference (for completed payments)
+     * @param  int|null  $charges  The charges applied to the payment (for completed payments)
+     * @param  array<array<string, string|null>>|null  $meta  Additional metadata (for completed payments)
+     * @param  Authorization|null  $authorization  Authorization details (for completed payments)
+     * @param  Customer|null  $customer  Customer details (for completed payments)
+     * @param  Customization|null  $customization  Customization details (for completed payments)
+     * @param  array<Log>|null  $logs  Array of Log objects (for completed payments)
+     * @param  string|null  $createdAt  When the payment was created (for completed payments)
+     * @param  string|null  $updatedAt  When the payment was last updated (for completed payments)
      */
     public function __construct(
         public readonly string $event,
@@ -47,7 +49,7 @@ final class PendingPayment extends Payment
         public readonly ?int $charges = null,
         public readonly ?array $meta = null,
         public readonly ?Authorization $authorization = null,
-        public readonly ?\Codelabmw\Paychangu\Customer $customer = null,
+        public readonly ?Customer $customer = null,
         public readonly ?Customization $customization = null,
         public readonly ?array $logs = null,
         public readonly ?string $createdAt = null,
@@ -57,26 +59,16 @@ final class PendingPayment extends Payment
     }
 
     /**
-     * Returns the transaction reference of the payment.
-     *
-     * @return string The transaction reference of the payment.
-     */
-    public function reference(): string
-    {
-        return $this->reference;
-    }
-
-    /**
      * Creates a new instance of the PendingPayment class from an array.
      * The format should match the response from the server.
      *
-     * @param array $data The data to create the instance from.
+     * @param  array<string, mixed>  $data  The data to create the instance from.
      * @return self The created instance.
      */
     public static function fromArray(array $data): self
     {
         // Handle Object A format (checkout.session:created)
-        if (isset($data['event']) && str_contains($data['event'], 'checkout.session:created')) {
+        if (isset($data['event']) && str_contains((string) $data['event'], 'checkout.session:created')) {
             return new self(
                 event: $data['event'],
                 checkoutUrl: $data['checkout_url'] ?? null,
@@ -103,14 +95,14 @@ final class PendingPayment extends Payment
                 paymentReference: $data['reference'] ?? null,
                 charges: isset($data['charges']) ? (int) $data['charges'] : null,
                 meta: $data['meta'] ?? null,
-                authorization: !empty($data['authorization']) ? Authorization::fromArray($data['authorization']) : null,
-                customer: !empty($data['customer']) ? new Customer(
+                authorization: empty($data['authorization']) ? null : Authorization::fromArray($data['authorization']),
+                customer: empty($data['customer']) ? null : new Customer(
                     firstName: $data['customer']['first_name'] ?? '',
                     lastName: $data['customer']['last_name'] ?? null,
                     email: $data['customer']['email'] ?? null
-                ) : null,
-                customization: !empty($data['customization']) ? Customization::fromArray($data['customization']) : null,
-                logs: !empty($data['logs']) ? array_map(fn($log) => Log::fromArray($log), $data['logs']) : null,
+                ),
+                customization: empty($data['customization']) ? null : Customization::fromArray($data['customization']),
+                logs: empty($data['logs']) ? null : array_map(fn ($log): Log => Log::fromArray($log), $data['logs']),
                 createdAt: $data['created_at'] ?? null,
                 updatedAt: $data['updated_at'] ?? null,
             );
@@ -126,5 +118,15 @@ final class PendingPayment extends Payment
             status: $data['status'] ?? ($data['data']['status'] ?? 'unknown'),
             checkoutUrl: $data['checkout_url'] ?? null,
         );
+    }
+
+    /**
+     * Returns the transaction reference of the payment.
+     *
+     * @return string The transaction reference of the payment.
+     */
+    public function reference(): string
+    {
+        return $this->reference;
     }
 }

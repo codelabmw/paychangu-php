@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 use Codelabmw\Paychangu\Enums\Currency;
 use Codelabmw\Paychangu\Payments\Standard\PendingPayment;
 use Codelabmw\Paychangu\Payments\Standard\ValueObjects\Authorization;
 use Codelabmw\Paychangu\Payments\Standard\ValueObjects\Customization;
 use Codelabmw\Paychangu\Payments\Standard\ValueObjects\Log;
 
-test('creates a pending payment instance', function () {
+test('creates a pending payment instance', function (): void {
     // Arrange & Act
     $payment = new PendingPayment(
         event: 'checkout.session:created',
@@ -28,14 +30,14 @@ test('creates a pending payment instance', function () {
     expect($payment->mode)->toBe('sandbox');
     expect($payment->status)->toBe('pending');
     expect($payment->checkoutUrl)->toBe('https://test-checkout.paychangu.com/7887951180');
-    
+
     // Test optional properties are null
     expect($payment->eventType)->toBeNull();
     expect($payment->type)->toBeNull();
     expect($payment->customer)->toBeNull();
 });
 
-test('creates a pending payment from array with checkout session data', function () {
+test('creates a pending payment from array with checkout session data', function (): void {
     // Arrange & Act
     $payment = PendingPayment::fromArray([
         'event' => 'checkout.session:created',
@@ -60,7 +62,7 @@ test('creates a pending payment from array with checkout session data', function
     expect($payment->status)->toBe('pending');
 });
 
-test('creates a completed payment from array with payment data', function () {
+test('creates a completed payment from array with payment data', function (): void {
     // Arrange
     $paymentData = [
         'event_type' => 'checkout.payment',
@@ -114,7 +116,7 @@ test('creates a completed payment from array with payment data', function () {
 
     // Assert
     expect($payment)->toBeInstanceOf(PendingPayment::class);
-    
+
     // Basic fields
     expect($payment->event)->toBe('checkout.payment');
     expect($payment->eventType)->toBe('checkout.payment');
@@ -123,40 +125,40 @@ test('creates a completed payment from array with payment data', function () {
     expect($payment->amount)->toBe(1000);
     expect($payment->mode)->toBe('live');
     expect($payment->status)->toBe('success');
-    
+
     // Additional fields
     expect($payment->type)->toBe('API Payment (Checkout)');
     expect($payment->numberOfAttempts)->toBe(1);
     expect($payment->paymentReference)->toBe('26262633201');
     expect($payment->charges)->toBe(40);
-    
+
     // Customer
     expect($payment->customer)->not->toBeNull();
     expect($payment->customer->firstName)->toBe('Mac');
     expect($payment->customer->lastName)->toBe('Phiri');
     expect($payment->customer->email)->toBe('yourmail@example.com');
-    
+
     // Authorization
     expect($payment->authorization)->toBeInstanceOf(Authorization::class);
     expect($payment->authorization->channel)->toBe('Card');
     expect($payment->authorization->cardNumber)->toBe('230377******0408');
     expect($payment->authorization->expiry)->toBe('2035-12');
-    
+
     // Customization
     expect($payment->customization)->toBeInstanceOf(Customization::class);
     expect($payment->customization->title)->toBe('iPhone 10');
-    
+
     // Logs
     expect($payment->logs)->toHaveCount(2);
     expect($payment->logs[0])->toBeInstanceOf(Log::class);
     expect($payment->logs[0]->message)->toContain('Attempted to pay');
-    
+
     // Timestamps
     expect($payment->createdAt)->toBe('2024-08-08T23:20:21.000000Z');
     expect($payment->updatedAt)->toBe('2024-08-08T23:20:21.000000Z');
 });
 
-test('handles unknown format with fallback', function () {
+test('handles unknown format with fallback', function (): void {
     // Arrange & Act
     $payment = PendingPayment::fromArray([
         'tx_ref' => 'fallback-ref',

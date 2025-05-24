@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Codelabmw\Paychangu\Enums\Currency;
 use Codelabmw\Paychangu\Order;
 use Codelabmw\Paychangu\Payments\Standard\StandardOrder;
 
-test('standard order', function () {
+test('standard order', function (): void {
     // Arrange
     $order = new StandardOrder(
         amount: 1000,
