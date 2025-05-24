@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
+use Codelabmw\Paychangu\Client;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Codelabmw\Paychangu\Client;
 
-it('sends a get request', function () {
+it('sends a get request', function (): void {
     // Arrange
     $mock = new MockHandler([
         new Response(200, ['X-Foo' => 'Bar'], json_encode(['foo' => 'bar'])),
@@ -32,7 +34,7 @@ it('sends a get request', function () {
     expect($request->getUri()->getPath())->toBe('/greetings');
 });
 
-it('sends a post request', function () {
+it('sends a post request', function (): void {
     // Arrange
     $mock = new MockHandler([
         new Response(200, ['X-Foo' => 'Bar'], json_encode(['foo' => 'bar'])),
