@@ -50,6 +50,8 @@ class StandardPayment extends PaymentHandler
      *
      * @param string $reference The reference of the payment to retrieve.
      * @return Payment The payment entity.
+     *
+     * @throws PaychanguException If the payment is not found.
      */
     public function retrieve(string $reference): PendingPayment
     {
@@ -68,9 +70,16 @@ class StandardPayment extends PaymentHandler
      *
      * @param Payment|string $payment The payment to verify.
      * @return bool True if the payment is verified, false otherwise.
+     *
+     * @throws PaychanguException If the payment is not found.
      */
     public function verify(Payment|string $payment): bool
     {
-        //
+        $reference = $payment instanceof Payment ? $payment->reference() : $payment;
+
+        /** @var PendingPayment $payment */
+        $payment = $this->retrieve($reference);
+
+        return $payment->status === 'success';
     }
 }

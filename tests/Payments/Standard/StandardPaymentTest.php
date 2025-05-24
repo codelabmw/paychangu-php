@@ -220,4 +220,194 @@ it('can throw paychangu exception when retrieve fails', function () {
     $payment->retrieve('PA54231315');
 })->throws(PaychanguException::class);
 
-it('verifies a payment')->todo();
+it('verifies a payment', function () {
+    // Arrange
+    $mock = new MockHandler([
+        new Response(status: 200, body: json_encode(
+            [
+                "status" => "success",
+                "message" => "Payment details retrieved successfully.",
+                "data" => [
+                    "event_type" => "checkout.payment",
+                    "tx_ref" => "PA54231315",
+                    "mode" => "live",
+                    "type" => "API Payment (Checkout)",
+                    "status" => "success",
+                    "number_of_attempts" => 1,
+                    "reference" => "26262633201",
+                    "currency" => "MWK",
+                    "amount" => 1000,
+                    "charges" => 40,
+                    "customization" => [
+                        "title" => "iPhone 10",
+                        "description" => "Online order",
+                        "logo" => null
+                    ],
+                    "meta" => null,
+                    "authorization" => [
+                        "channel" => "Card",
+                        "card_number" => "230377******0408",
+                        "expiry" => "2035-12",
+                        "brand" => "MASTERCARD",
+                        "provider" => null,
+                        "mobile_number" => null,
+                        "completed_at" => "2024-08-08T23:21:22.000000Z"
+                    ],
+                    "customer" => [
+                        "email" => "yourmail@example.com",
+                        "first_name" => "Mac",
+                        "last_name" => "Phiri"
+                    ],
+                    "logs" => [
+                        [
+                            "type" => "log",
+                            "message" => "Attempted to pay with card",
+                            "created_at" => "2024-08-08T23:20:59.000000Z"
+                        ],
+                        [
+                            "type" => "log",
+                            "message" => "Processing and verification of card payment completed successfully.",
+                            "created_at" => "2024-08-08T23:21:22.000000Z"
+                        ]
+                    ],
+                    "created_at" => "2024-08-08T23:20:21.000000Z",
+                    "updated_at" => "2024-08-08T23:20:21.000000Z"
+                ]
+            ]
+        )),
+    ]);
+
+    $handlerStack = HandlerStack::create($mock);
+    $httpClient = new GuzzleClient(['handler' => $handlerStack]);
+
+    $client = new Client('secret', httpClient: $httpClient);
+    $payment = new StandardPayment($client);
+
+    // Act
+    $success = $payment->verify('PA54231315');
+
+    // Assert
+    expect($success)->toBeTrue();
+});
+
+it('verifies a payment given a payment instance', function () {
+    // Arrange
+    $mock = new MockHandler([
+        new Response(status: 200, body: json_encode(
+            [
+                "status" => "success",
+                "message" => "Payment details retrieved successfully.",
+                "data" => [
+                    "event_type" => "checkout.payment",
+                    "tx_ref" => "PA54231315",
+                    "mode" => "live",
+                    "type" => "API Payment (Checkout)",
+                    "status" => "success",
+                    "number_of_attempts" => 1,
+                    "reference" => "26262633201",
+                    "currency" => "MWK",
+                    "amount" => 1000,
+                    "charges" => 40,
+                    "customization" => [
+                        "title" => "iPhone 10",
+                        "description" => "Online order",
+                        "logo" => null
+                    ],
+                    "meta" => null,
+                    "authorization" => [
+                        "channel" => "Card",
+                        "card_number" => "230377******0408",
+                        "expiry" => "2035-12",
+                        "brand" => "MASTERCARD",
+                        "provider" => null,
+                        "mobile_number" => null,
+                        "completed_at" => "2024-08-08T23:21:22.000000Z"
+                    ],
+                    "customer" => [
+                        "email" => "yourmail@example.com",
+                        "first_name" => "Mac",
+                        "last_name" => "Phiri"
+                    ],
+                    "logs" => [
+                        [
+                            "type" => "log",
+                            "message" => "Attempted to pay with card",
+                            "created_at" => "2024-08-08T23:20:59.000000Z"
+                        ],
+                        [
+                            "type" => "log",
+                            "message" => "Processing and verification of card payment completed successfully.",
+                            "created_at" => "2024-08-08T23:21:22.000000Z"
+                        ]
+                    ],
+                    "created_at" => "2024-08-08T23:20:21.000000Z",
+                    "updated_at" => "2024-08-08T23:20:21.000000Z"
+                ]
+            ]
+        )),
+        new Response(status: 200, body: json_encode(
+            [
+                "status" => "success",
+                "message" => "Payment details retrieved successfully.",
+                "data" => [
+                    "event_type" => "checkout.payment",
+                    "tx_ref" => "PA54231315",
+                    "mode" => "live",
+                    "type" => "API Payment (Checkout)",
+                    "status" => "success",
+                    "number_of_attempts" => 1,
+                    "reference" => "26262633201",
+                    "currency" => "MWK",
+                    "amount" => 1000,
+                    "charges" => 40,
+                    "customization" => [
+                        "title" => "iPhone 10",
+                        "description" => "Online order",
+                        "logo" => null
+                    ],
+                    "meta" => null,
+                    "authorization" => [
+                        "channel" => "Card",
+                        "card_number" => "230377******0408",
+                        "expiry" => "2035-12",
+                        "brand" => "MASTERCARD",
+                        "provider" => null,
+                        "mobile_number" => null,
+                        "completed_at" => "2024-08-08T23:21:22.000000Z"
+                    ],
+                    "customer" => [
+                        "email" => "yourmail@example.com",
+                        "first_name" => "Mac",
+                        "last_name" => "Phiri"
+                    ],
+                    "logs" => [
+                        [
+                            "type" => "log",
+                            "message" => "Attempted to pay with card",
+                            "created_at" => "2024-08-08T23:20:59.000000Z"
+                        ],
+                        [
+                            "type" => "log",
+                            "message" => "Processing and verification of card payment completed successfully.",
+                            "created_at" => "2024-08-08T23:21:22.000000Z"
+                        ]
+                    ],
+                    "created_at" => "2024-08-08T23:20:21.000000Z",
+                    "updated_at" => "2024-08-08T23:20:21.000000Z"
+                ]
+            ]
+        )),
+    ]);
+
+    $handlerStack = HandlerStack::create($mock);
+    $httpClient = new GuzzleClient(['handler' => $handlerStack]);
+
+    $client = new Client('secret', httpClient: $httpClient);
+    $payment = new StandardPayment($client);
+
+    // Act
+    $success = $payment->verify($payment->retrieve('PA54231315'));
+
+    // Assert
+    expect($success)->toBeTrue();
+});
