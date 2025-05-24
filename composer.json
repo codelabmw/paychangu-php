@@ -1,11 +1,11 @@
 {
-    "name": "codelabmw/php-package-skeleton",
-    "description": "A minimal project tamplate for getting started with PHP packages development.",
-    "type": "project",
+    "name": "codelabmw/paychangu-php",
+    "description": "An open source PHP SDK for Paychangu payment gateway.",
+    "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Codelabmw\\Package\\": "src/"
+            "Codelabmw\\Paychangu\\": "src/"
         }
     },
     "autoload-dev": {
@@ -20,7 +20,8 @@
         }
     ],
     "require": {
-        "php": "^8.3"
+        "php": "^8.3",
+        "guzzlehttp/guzzle": "^7.9"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.1.14",

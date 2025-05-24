@@ -6,7 +6,7 @@ namespace Codelabmw\Tests;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
-final class TestCase extends PHPUnitTestCase
+class TestCase extends PHPUnitTestCase
 {
     // ...
 }
