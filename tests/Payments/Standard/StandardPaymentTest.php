@@ -91,7 +91,7 @@ it('initiates a payment', function () {
     expect($payment)->toHaveProperty('amount', 1000);
 });
 
-it('can throw paychangu exception', function () {
+it('can throw paychangu exception when initiate fails', function () {
     // Arrange
     $mock = new MockHandler([
         new Response(status: 400, body: json_encode(
@@ -197,6 +197,27 @@ it('gets a payment', function () {
 
     // Assert
     expect($payment)->toBeInstanceOf(PendingPayment::class);
-})->todo();
+});
+
+it('can throw paychangu exception when retrieve fails', function () {
+    // Arrange
+    $mock = new MockHandler([
+        new Response(status: 400, body: json_encode(
+            [
+                "status" => "error",
+                "message" => "Invalid transaction reference.",
+            ]
+        )),
+    ]);
+
+    $handlerStack = HandlerStack::create($mock);
+    $httpClient = new GuzzleClient(['handler' => $handlerStack]);
+
+    $client = new Client('secret', httpClient: $httpClient);
+    $payment = new StandardPayment($client);
+
+    // Act
+    $payment->retrieve('PA54231315');
+})->throws(PaychanguException::class);
 
 it('verifies a payment')->todo();
