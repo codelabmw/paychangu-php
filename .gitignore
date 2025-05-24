@@ -1,0 +1,25 @@
+# Build artifacts
+/build
+
+# Package dependencies
+/vendor
+/composer.lock
+
+# Testing
+/.phpunit.cache
+.phpactor.json
+.phpunit.result.cache
+
+# Logs
+npm-debug.log
+yarn-error.log
+
+# Secrets
+/auth.json
+
+# IDE
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
