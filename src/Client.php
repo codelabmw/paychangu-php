@@ -41,16 +41,31 @@ final class Client
     }
 
     /**
+     * Sends a POST request to the specified path.
+     *
+     * @param string $path The path to send the request to.
+     * @param array $data The data to send with the request.
+     * @return ResponseInterface The response from the server.
+     */
+    public function post(string $path, array $data): ResponseInterface
+    {
+        return $this->request('POST', $path, [
+            'json' => $data,
+        ]);
+    }
+
+    /**
      * Sends a request to the specified path.
      *
      * @param string $method The HTTP method to use.
      * @param string $path The path to send the request to.
      * @return ResponseInterface The response from the server.
      */
-    private function request(string $method, string $path): ResponseInterface
+    private function request(string $method, string $path, array $options = []): ResponseInterface
     {
         return $this->httpClient->request($method, $this->baseUrl . $path, [
             'headers' => $this->headers,
+            ...$options,
         ]);
     }
 }
