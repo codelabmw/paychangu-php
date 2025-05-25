@@ -42,10 +42,9 @@ final class StandardPayment extends PaymentHandler
         $response = $this->client->post('/payment', $order->toArray());
         $data = json_decode($response->getBody()->getContents(), true);
 
-        // @phpstan-ignore-next-line
-        if ($response->getStatusCode() !== 200 || $data['status'] !== 'success') {
+        if ($response->getStatusCode() === 400) {
             // @phpstan-ignore-next-line
-            throw new PaychanguException($data['message'], $response->getStatusCode());
+            throw new PaychanguException(json_encode($data['message']));
         }
 
         // @phpstan-ignore-next-line
@@ -67,10 +66,9 @@ final class StandardPayment extends PaymentHandler
         $response = $this->client->get('/verify-paymen/'.$reference);
         $data = json_decode($response->getBody()->getContents(), true);
 
-        // @phpstan-ignore-next-line
-        if ($response->getStatusCode() !== 200 || $data['status'] !== 'success') {
+        if ($response->getStatusCode() === 400) {
             // @phpstan-ignore-next-line
-            throw new PaychanguException($data['message'], $response->getStatusCode());
+            throw new PaychanguException(json_encode($data['message']), 400);
         }
 
         // @phpstan-ignore-next-line
