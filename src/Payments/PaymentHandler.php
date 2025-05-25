@@ -7,6 +7,9 @@ namespace Codelabmw\Paychangu\Payments;
 use Codelabmw\Paychangu\Order;
 use Codelabmw\Paychangu\Payment;
 
+/**
+ * @internal
+ */
 abstract class PaymentHandler
 {
     /**

@@ -68,7 +68,7 @@ final class StandardPayment extends PaymentHandler
 
         if ($response->getStatusCode() === 400) {
             // @phpstan-ignore-next-line
-            throw new PaychanguException(json_encode($data['message']), 400);
+            throw new PaychanguException(json_encode($data['message']));
         }
 
         // @phpstan-ignore-next-line
