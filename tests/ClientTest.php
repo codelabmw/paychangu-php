@@ -59,3 +59,14 @@ it('sends a post request', function (): void {
     expect($request->getUri()->getHost())->toBe('api.paychangu.com');
     expect($request->getUri()->getPath())->toBe('/greetings');
 });
+
+it('gets current secret', function (): void {
+    // Arrange
+    $client = new Client('secret');
+
+    // Act
+    $secret = $client->secret();
+
+    // Assert
+    expect($secret)->toBe('secret');
+});

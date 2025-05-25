@@ -56,6 +56,16 @@ final readonly class Client
     }
 
     /**
+     * Gets the current secret.
+     *
+     * @return string The current secret.
+     */
+    public function secret(): string
+    {
+        return $this->secret;
+    }
+
+    /**
      * Sends a request to the specified path.
      *
      * @param  string  $method  The HTTP method to use.
