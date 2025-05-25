@@ -22,6 +22,12 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
 
+      - name: Clean up existing wiki directory
+        run: |
+          if [ -d "wiki" ]; then
+            rm -rf wiki
+          fi
+
       - name: Clone the wiki repository
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -38,3 +44,7 @@ jobs:
           git add .
           git commit -m "Sync docs to wiki [ci skip]" || echo "No changes to commit"
           git push
+
+      - name: Clean up wiki directory after push
+        run: |
+          rm -rf wiki
