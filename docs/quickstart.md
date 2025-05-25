@@ -23,14 +23,14 @@ use Codelabmw\Paychangu\Enums\Currency;
 
 use Codelabmw\Paychangu\Support\Reference;
 
-$reference = new Reference();
+$reference = (string) new Reference();
 
 $order = new StandardOrder(
     amount: 10_000,
     currency: Currency::MWK,
-    reference: (string) $reference,
-    callbackUrl: 'https://yourapp.com/webhook',
-    returnUrl: 'https://yourapp.com/return',
+    reference: $reference,
+    callbackUrl: 'https://yourapp.com/success', // This is not a webhook endpoint, configure your webhook endpoint in the Paychangu dashboard.
+    returnUrl: 'https://yourapp.com/return', // This is the URL to redirect to after payment is cancelled.
 );
 
 $payment = (new StandardPayment($client))->initiate($order);
@@ -50,7 +50,7 @@ You can retrieve a payment by its reference at any time:
 
 ```php
 $paymentHandler = new StandardPayment($client);
-$retrievedPayment = $paymentHandler->retrieve((string) $reference);
+$retrievedPayment = $paymentHandler->retrieve($reference);
 ```
 
 ---

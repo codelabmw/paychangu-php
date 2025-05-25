@@ -11,7 +11,7 @@ use Codelabmw\Paychangu\Support\Webhook;
 use Codelabmw\Paychangu\Client;
 
 $client = new Client('YOUR_SECRET_KEY');
-$request = Webhook::getCurrentRequest();
+$request = Webhook::getCurrentRequest(); // Or any PSR-7 RequestInterface instance
 $webhook = new Webhook($client);
 
 if ($webhook->authenticate($request)) {
