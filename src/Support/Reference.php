@@ -22,7 +22,7 @@ final readonly class Reference implements Stringable
      */
     public function __construct(
         string $prefix = 'REF',
-        int $length = 6,
+        int $length = 16,
     ) {
         $this->ref = $prefix.'-'.Testament::alpha($length - (mb_strlen($prefix) + 1));
     }
