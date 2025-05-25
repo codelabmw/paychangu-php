@@ -1,10 +1,30 @@
 <p align="center">
     <img src="art/banner.png" width="800" alt="Banner">
+    <p align="center">
+        <a href="https://github.com/codelabmw/paychangu-php/actions"><img alt="GitHub Workflow Status (master)" src="https://github.com/codelabmw/paychangu-php/actions/workflows/tests.yml/badge.svg"></a>
+        <a href="https://packagist.org/packages/codelabmw/paychangu-php"><img alt="Total Downloads" src="https://img.shields.io/packagist/dt/codelabmw/paychangu-php"></a>
+        <a href="https://packagist.org/packages/codelabmw/paychangu-php"><img alt="Latest Version" src="https://img.shields.io/packagist/v/codelabmw/paychangu-php"></a>
+        <a href="https://packagist.org/packages/codelabmw/paychangu-php"><img alt="License" src="https://img.shields.io/packagist/l/codelabmw/paychangu-php"></a>
+    </p>
 </p>
 
 ---
 
-Hello World, this is a PHP package skeleton with modern tooling for testing and modern code quality included.
+This is an open source PHP SDK for Paychangu payment gateway.
+
+> Requires PHP version: ^8.3
+
+## Installation
+
+You can install the package via composer:
+
+```bash
+composer require codelabmw/paychangu-php
+```
+
+## Usage
+
+Please see the [documentation](docs/README.md) for more information on how to use this package.
 
 ## Changelog
 
