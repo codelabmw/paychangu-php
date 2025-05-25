@@ -6,6 +6,7 @@ namespace Codelabmw\Paychangu\Payments\Standard;
 
 use Codelabmw\Paychangu\Customer;
 use Codelabmw\Paychangu\Enums\Currency;
+use Codelabmw\Paychangu\Exceptions\InvalidDataException;
 use Codelabmw\Paychangu\Payment;
 use Codelabmw\Paychangu\Payments\Standard\ValueObjects\Authorization;
 use Codelabmw\Paychangu\Payments\Standard\ValueObjects\Customization;
@@ -21,7 +22,6 @@ final class PendingPayment extends Payment
      * @param  string  $mode  The mode of the payment (e.g., 'sandbox' or 'live')
      * @param  string  $status  The status of the payment (e.g., 'pending' or 'success')
      * @param  string|null  $checkoutUrl  The URL for the checkout page (for pending payments)
-     * @param  string|null  $eventType  The type of the event (for completed payments)
      * @param  string|null  $type  The type of payment (for completed payments)
      * @param  int|null  $numberOfAttempts  Number of payment attempts (for completed payments)
      * @param  string|null  $paymentReference  The payment reference (for completed payments)
@@ -42,7 +42,6 @@ final class PendingPayment extends Payment
         public readonly string $mode,
         public readonly string $status,
         public readonly ?string $checkoutUrl = null,
-        public readonly ?string $eventType = null,
         public readonly ?string $type = null,
         public readonly ?int $numberOfAttempts = null,
         public readonly ?string $paymentReference = null,
@@ -67,7 +66,7 @@ final class PendingPayment extends Payment
      */
     public static function fromArray(array $data): self
     {
-        // Handle Object A format (checkout.session:created)
+        // Handle checkout.session:created
         if (isset($data['event']) && str_contains((string) $data['event'], 'checkout.session:created')) {
             return new self(
                 event: $data['event'],
@@ -80,7 +79,7 @@ final class PendingPayment extends Payment
             );
         }
 
-        // Handle Object B format (completed payment)
+        // Handle checkout.payment
         if (isset($data['event_type']) && $data['event_type'] === 'checkout.payment') {
             return new self(
                 event: 'checkout.payment',
@@ -89,7 +88,6 @@ final class PendingPayment extends Payment
                 amount: (int) ($data['amount'] ?? 0),
                 mode: $data['mode'] ?? 'live',
                 status: $data['status'] ?? 'pending',
-                eventType: $data['event_type'] ?? null,
                 type: $data['type'] ?? null,
                 numberOfAttempts: isset($data['number_of_attempts']) ? (int) $data['number_of_attempts'] : null,
                 paymentReference: $data['reference'] ?? null,
@@ -102,22 +100,14 @@ final class PendingPayment extends Payment
                     email: $data['customer']['email'] ?? null
                 ),
                 customization: empty($data['customization']) ? null : Customization::fromArray($data['customization']),
-                logs: empty($data['logs']) ? null : array_map(fn ($log): Log => Log::fromArray($log), $data['logs']),
+                logs: empty($data['logs']) ? null : array_map(fn($log): Log => Log::fromArray($log), $data['logs']),
                 createdAt: $data['created_at'] ?? null,
                 updatedAt: $data['updated_at'] ?? null,
             );
         }
 
-        // Fallback for unknown format
-        return new self(
-            event: $data['event'] ?? 'unknown',
-            reference: $data['tx_ref'] ?? ($data['data']['tx_ref'] ?? ''),
-            currency: Currency::from($data['currency'] ?? ($data['data']['currency'] ?? 'MWK')),
-            amount: (int) ($data['amount'] ?? ($data['data']['amount'] ?? 0)),
-            mode: $data['mode'] ?? ($data['data']['mode'] ?? 'sandbox'),
-            status: $data['status'] ?? ($data['data']['status'] ?? 'unknown'),
-            checkoutUrl: $data['checkout_url'] ?? null,
-        );
+        // Unknown format
+        throw new InvalidDataException('Unknown format while creating PendingPayment instance: ' . json_encode($data));
     }
 
     /**

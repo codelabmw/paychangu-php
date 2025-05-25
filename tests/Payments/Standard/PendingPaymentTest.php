@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Codelabmw\Paychangu\Enums\Currency;
+use Codelabmw\Paychangu\Exceptions\InvalidDataException;
 use Codelabmw\Paychangu\Payments\Standard\PendingPayment;
 use Codelabmw\Paychangu\Payments\Standard\ValueObjects\Authorization;
 use Codelabmw\Paychangu\Payments\Standard\ValueObjects\Customization;
@@ -32,7 +33,6 @@ test('creates a pending payment instance', function (): void {
     expect($payment->checkoutUrl)->toBe('https://test-checkout.paychangu.com/7887951180');
 
     // Test optional properties are null
-    expect($payment->eventType)->toBeNull();
     expect($payment->type)->toBeNull();
     expect($payment->customer)->toBeNull();
 });
@@ -119,7 +119,6 @@ test('creates a completed payment from array with payment data', function (): vo
 
     // Basic fields
     expect($payment->event)->toBe('checkout.payment');
-    expect($payment->eventType)->toBe('checkout.payment');
     expect($payment->reference)->toBe('PA54231315');
     expect($payment->currency)->toBe(Currency::MWK);
     expect($payment->amount)->toBe(1000);
@@ -158,21 +157,13 @@ test('creates a completed payment from array with payment data', function (): vo
     expect($payment->updatedAt)->toBe('2024-08-08T23:20:21.000000Z');
 });
 
-test('handles unknown format with fallback', function (): void {
+test('throws exception for unknown format', function (): void {
     // Arrange & Act
-    $payment = PendingPayment::fromArray([
+    PendingPayment::fromArray([
         'tx_ref' => 'fallback-ref',
         'currency' => 'MWK',
         'amount' => 500,
         'mode' => 'test',
         'status' => 'unknown',
     ]);
-
-    // Assert
-    expect($payment)->toBeInstanceOf(PendingPayment::class);
-    expect($payment->reference)->toBe('fallback-ref');
-    expect($payment->currency)->toBe(Currency::MWK);
-    expect($payment->amount)->toBe(500);
-    expect($payment->mode)->toBe('test');
-    expect($payment->status)->toBe('unknown');
-});
+})->throws(InvalidDataException::class);

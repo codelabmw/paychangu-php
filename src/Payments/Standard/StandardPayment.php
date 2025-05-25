@@ -63,7 +63,7 @@ final class StandardPayment extends PaymentHandler
      */
     public function retrieve(string $reference): PendingPayment
     {
-        $response = $this->client->get('/verify-paymen/'.$reference);
+        $response = $this->client->get('/verify-payment/'.$reference);
         $data = json_decode($response->getBody()->getContents(), true);
 
         if ($response->getStatusCode() === 400) {
@@ -72,7 +72,7 @@ final class StandardPayment extends PaymentHandler
         }
 
         // @phpstan-ignore-next-line
-        return PendingPayment::fromArray($data);
+        return PendingPayment::fromArray($data['data']);
     }
 
     /**
