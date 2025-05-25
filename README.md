@@ -10,7 +10,7 @@
 
 ---
 
-This is an open source PHP SDK for [Paychangu payment gateway](https://paychangu.com).
+This is an open source PHP SDK for [Paychangu](https://paychangu.com) payment gateway.
 
 ## Usage
 
