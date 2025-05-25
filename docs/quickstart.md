@@ -40,7 +40,7 @@ header('Location: ' . $payment->checkoutUrl);
 exit;
 ```
 
-> More information on [Reference](reference.md).
+> More information on [Reference](reference.md) class.
 
 ---
 
