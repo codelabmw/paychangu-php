@@ -10,10 +10,14 @@ The SDK currently supports **Standard Payments**. This section explains how to c
 use Codelabmw\Paychangu\Payments\Standard\StandardOrder;
 use Codelabmw\Paychangu\Enums\Currency;
 
+use Codelabmw\Paychangu\Support\Reference;
+
+$reference = new Reference();
+
 $order = new StandardOrder(
     amount: 10000, // Amount in the smallest currency unit
     currency: Currency::MWK,
-    reference: 'TX123456789',
+    reference: (string) $reference, // Use generated reference
     callbackUrl: 'https://yourapp.com/webhook',
     returnUrl: 'https://yourapp.com/return',
     title: 'Order Title',
