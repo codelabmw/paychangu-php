@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Codelabmw\Paychangu\Support;
 
 use Codelabmw\Testament\Testament;
+use InvalidArgumentException;
 use Stringable;
 
 final readonly class Reference implements Stringable
@@ -29,24 +30,24 @@ final readonly class Reference implements Stringable
         bool $pretty = true,
     ) {
         if ($length < 6) {
-            throw new \InvalidArgumentException('Reference length must be at least 6');
+            throw new InvalidArgumentException('Reference length must be at least 6');
         }
 
         $alpha = Testament::alpha($length);
 
         if ($pretty) {
-            $first = substr($alpha, 0, 6);
-            $rest = substr($alpha, 6);
+            $first = mb_substr($alpha, 0, 6);
+            $rest = mb_substr($alpha, 6);
             $chunks = [$first];
 
             if ($rest !== '') {
-                $chunks = array_merge($chunks, str_split($rest, 4));
+                $chunks = array_merge($chunks, mb_str_split($rest, 4));
             }
 
             $alpha = implode('-', $chunks);
         }
 
-        $this->ref = $prefix . $prefixSeparator . $alpha;
+        $this->ref = $prefix.$prefixSeparator.$alpha;
     }
 
     /**
