@@ -1,0 +1,40 @@
+name: Sync Docs to Wiki
+
+description: >
+  Syncs the contents of the docs/ folder to the GitHub Wiki repository for this project.
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  sync-wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Git
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+      - name: Clone the wiki repository
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git clone https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.wiki.git wiki
+
+      - name: Sync docs to wiki
+        run: |
+          rsync -av --delete docs/ wiki/
+
+      - name: Commit and push changes to wiki
+        run: |
+          cd wiki
+          git add .
+          git commit -m "Sync docs to wiki [ci skip]" || echo "No changes to commit"
+          git push
