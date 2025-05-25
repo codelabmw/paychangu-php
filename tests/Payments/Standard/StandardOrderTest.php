@@ -34,3 +34,33 @@ test('standard order', function (): void {
     expect($order->meta)->toBe(null);
     expect($order->uuid)->toBe(null);
 });
+
+test('standard order to array', function (): void {
+    // Arrange
+    $order = new StandardOrder(
+        amount: 1000,
+        currency: Currency::MWK,
+        reference: '1234567890',
+        callbackUrl: 'https://example.com/callback',
+        returnUrl: 'https://example.com/return',
+        title: 'Test Order',
+        description: 'Test Order Description',
+        customer: null,
+        meta: null,
+        uuid: null,
+    );
+
+    // Assert
+    expect($order->toArray())->toBe([
+        'amount' => 1000,
+        'currency' => Currency::MWK->value,
+        'tx_ref' => '1234567890',
+        'callback_url' => 'https://example.com/callback',
+        'return_url' => 'https://example.com/return',
+        'title' => 'Test Order',
+        'description' => 'Test Order Description',
+        'customer' => null,
+        'meta' => null,
+        'uuid' => null,
+    ]);
+});

@@ -49,7 +49,7 @@ final class StandardOrder extends Order
         return [
             'amount' => $this->amount,
             'currency' => $this->currency->value,
-            'reference' => $this->reference,
+            'tx_ref' => $this->reference,
             'callback_url' => $this->callbackUrl,
             'return_url' => $this->returnUrl,
             'title' => $this->title ?? null,
