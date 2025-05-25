@@ -100,14 +100,14 @@ final class PendingPayment extends Payment
                     email: $data['customer']['email'] ?? null
                 ),
                 customization: empty($data['customization']) ? null : Customization::fromArray($data['customization']),
-                logs: empty($data['logs']) ? null : array_map(fn($log): Log => Log::fromArray($log), $data['logs']),
+                logs: empty($data['logs']) ? null : array_map(fn ($log): Log => Log::fromArray($log), $data['logs']),
                 createdAt: $data['created_at'] ?? null,
                 updatedAt: $data['updated_at'] ?? null,
             );
         }
 
         // Unknown format
-        throw new InvalidDataException('Unknown format while creating PendingPayment instance: ' . json_encode($data));
+        throw new InvalidDataException('Unknown format while creating PendingPayment instance: '.json_encode($data));
     }
 
     /**
