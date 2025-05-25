@@ -26,9 +26,9 @@ use Codelabmw\Paychangu\Support\Reference;
 $reference = new Reference();
 
 $order = new StandardOrder(
-    amount: 10000, // Amount in the smallest currency unit (e.g., tambala for MWK)
+    amount: 10_000,
     currency: Currency::MWK,
-    reference: (string) $reference, // Use generated reference
+    reference: (string) $reference,
     callbackUrl: 'https://yourapp.com/webhook',
     returnUrl: 'https://yourapp.com/return',
 );
@@ -40,8 +40,37 @@ header('Location: ' . $payment->checkoutUrl);
 exit;
 ```
 
+> More information on [Reference](reference.md).
+
 ---
 
-## 3. Validate Webhook Requests
+## 3. Retrieve a Payment
+
+You can retrieve a payment by its reference at any time:
+
+```php
+$paymentHandler = new StandardPayment($client);
+$retrievedPayment = $paymentHandler->retrieve((string) $reference);
+```
+
+---
+
+## 4. Verify a Payment
+
+To check if a payment was successful, use the `verify` method, it accepts either a string or a `Payment` object returned by `initiate` and or `retrieve` methods:
+
+```php
+// Verify by transaction reference
+$isVerified = $paymentHandler->verify($reference); // Returns true if successful
+
+// Verify by payment object
+$isVerified = $paymentHandler->verify($payment); // Returns true if successful
+```
+
+> **NOTE** The `verify` method calls `retrieve` method to get the payment object in both cases.
+
+---
+
+## 5. Validate Webhook Requests
 
 See [Webhooks](webhooks.md) for secure webhook handling.
