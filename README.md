@@ -10,21 +10,11 @@
 
 ---
 
-This is an open source PHP SDK for Paychangu payment gateway.
-
-> Requires PHP version: ^8.3
-
-## Installation
-
-You can install the package via composer:
-
-```bash
-composer require codelabmw/paychangu-php
-```
+This is an open source PHP SDK for [Paychangu payment gateway](https://paychangu.com).
 
 ## Usage
 
-Please see the [documentation](docs/README.md) for more information on how to use this package.
+Please see the [DOCUMENTATION](docs/README.md) for more information on how to use this package.
 
 ## Changelog
 
