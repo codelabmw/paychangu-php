@@ -18,13 +18,35 @@ final readonly class Reference implements Stringable
      * Creates a new reference instance.
      *
      * @param  string  $prefix  The prefix of the reference.
-     * @param  int  $length  The total length of the reference including the prefix.
+     * @param  int  $length  The length of the reference after the prefix.
+     * @param  string  $prefixSeparator  The separator between the prefix and the reference.
+     * @param  bool  $pretty  Adds a separator between reference characters.
      */
     public function __construct(
         string $prefix = 'REF',
-        int $length = 16,
+        int $length = 18,
+        string $prefixSeparator = '-',
+        bool $pretty = true,
     ) {
-        $this->ref = $prefix.'-'.Testament::alpha($length - (mb_strlen($prefix) + 1));
+        if ($length < 6) {
+            throw new \InvalidArgumentException('Reference length must be at least 6');
+        }
+
+        $alpha = Testament::alpha($length);
+
+        if ($pretty) {
+            $first = substr($alpha, 0, 6);
+            $rest = substr($alpha, 6);
+            $chunks = [$first];
+
+            if ($rest !== '') {
+                $chunks = array_merge($chunks, str_split($rest, 4));
+            }
+
+            $alpha = implode('-', $chunks);
+        }
+
+        $this->ref = $prefix . $prefixSeparator . $alpha;
     }
 
     /**
@@ -34,6 +56,6 @@ final readonly class Reference implements Stringable
      */
     public function __toString(): string
     {
-        return mb_strtolower($this->ref);
+        return $this->ref;
     }
 }
