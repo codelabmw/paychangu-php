@@ -57,8 +57,10 @@ test('standard order to array', function (): void {
         'tx_ref' => '1234567890',
         'callback_url' => 'https://example.com/callback',
         'return_url' => 'https://example.com/return',
-        'title' => 'Test Order',
-        'description' => 'Test Order Description',
+        'customization' => [
+            'title' => 'Test Order',
+            'description' => 'Test Order Description',
+        ],
         'customer' => null,
         'meta' => null,
         'uuid' => null,
