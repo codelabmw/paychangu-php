@@ -70,8 +70,8 @@ final readonly class Webhook
 
         $headers = [];
         foreach ($_SERVER as $key => $value) {
-            if (str_starts_with($key, 'HTTP_')) {
-                $header = str_replace(' ', '-', ucwords(mb_strtolower(str_replace('_', ' ', mb_substr($key, 5)))));
+            if (str_starts_with((string) $key, 'HTTP_')) {
+                $header = str_replace(' ', '-', ucwords(mb_strtolower(str_replace('_', ' ', mb_substr((string) $key, 5)))));
                 $headers[$header] = [$value];
             }
 

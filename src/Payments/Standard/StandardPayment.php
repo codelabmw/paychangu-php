@@ -87,7 +87,6 @@ final class StandardPayment extends PaymentHandler
     {
         $reference = $payment instanceof Payment ? $payment->reference() : $payment;
 
-        /** @var PendingPayment $payment */
         $payment = $this->retrieve($reference);
 
         return $payment->status === 'success';

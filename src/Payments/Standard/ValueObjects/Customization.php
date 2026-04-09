@@ -14,9 +14,9 @@ final readonly class Customization
      * @param  ?string  $logo  The logo of the customization.
      */
     public function __construct(
-        public readonly ?string $title,
-        public readonly ?string $description,
-        public readonly ?string $logo,
+        public ?string $title,
+        public ?string $description,
+        public ?string $logo,
     ) {
         //
     }

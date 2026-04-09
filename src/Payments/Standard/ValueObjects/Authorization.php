@@ -18,13 +18,13 @@ final readonly class Authorization
      * @param  ?string  $completedAt  The completed at date of the authorization.
      */
     public function __construct(
-        public readonly ?string $channel,
-        public readonly ?string $cardNumber,
-        public readonly ?string $expiry,
-        public readonly ?string $brand,
-        public readonly ?string $provider,
-        public readonly ?string $mobileNumber,
-        public readonly ?string $completedAt,
+        public ?string $channel,
+        public ?string $cardNumber,
+        public ?string $expiry,
+        public ?string $brand,
+        public ?string $provider,
+        public ?string $mobileNumber,
+        public ?string $completedAt,
     ) {
         //
     }

@@ -70,12 +70,12 @@ final class PendingPayment extends Payment
         if (isset($data['event']) && str_contains((string) $data['event'], 'checkout.session:created')) {
             return new self(
                 event: $data['event'],
-                checkoutUrl: $data['checkout_url'] ?? null,
                 reference: $data['data']['tx_ref'] ?? '',
                 currency: Currency::from($data['data']['currency'] ?? 'MWK'),
                 amount: (int) ($data['data']['amount'] ?? 0),
                 mode: $data['data']['mode'] ?? 'sandbox',
                 status: $data['data']['status'] ?? 'pending',
+                checkoutUrl: $data['checkout_url'] ?? null,
             );
         }
 
@@ -100,7 +100,7 @@ final class PendingPayment extends Payment
                     email: $data['customer']['email'] ?? null
                 ),
                 customization: empty($data['customization']) ? null : Customization::fromArray($data['customization']),
-                logs: empty($data['logs']) ? null : array_map(fn ($log): Log => Log::fromArray($log), $data['logs']),
+                logs: empty($data['logs']) ? null : array_map(Log::fromArray(...), $data['logs']),
                 createdAt: $data['created_at'] ?? null,
                 updatedAt: $data['updated_at'] ?? null,
             );
