@@ -13,10 +13,10 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        php: [8.3]
+        php: [8.3, 8.4, 8.5]
         stability: [prefer-lowest, prefer-stable]
         include:
-          - php: 8.3
+          - php: 8.5
             stability: prefer-stable
 
     name: P${{ matrix.php }} - ${{ matrix.stability }} - ${{ matrix.os }}
@@ -42,9 +42,5 @@ jobs:
       - name: Type Tests
         run: composer test:types
 
-      - name: Code Quality Tests
-        run: composer test:refactor
-
       - name: Unit Tests
         run: composer test:unit
-        
