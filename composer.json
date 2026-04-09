@@ -33,7 +33,7 @@
         "phpstan/phpstan-deprecation-rules": "^2.0.4",
         "phpstan/phpstan-phpunit": "^2.0.16",
         "rector/rector": "^2.4.1",
-        "symfony/var-dumper": "^8.0.8"
+        "symfony/var-dumper": "^7.0 || ^8.0.8"
     },
     "scripts": {
         "refactor": "rector",
