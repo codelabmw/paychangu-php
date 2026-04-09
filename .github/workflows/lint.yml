@@ -3,7 +3,7 @@ name: linter
 on:
   pull_request:
     paths:
-      - '**.php'
+      - "**.php"
     branches:
       - master
 
@@ -19,11 +19,14 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: "8.4"
 
       - name: Install Dependencies
         run: |
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Run Rector
+        run: composer refactor
 
       - name: Run Pint
         run: composer lint
@@ -32,4 +35,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Fix code style
-          commit_options: '--no-verify'
+          commit_options: "--no-verify"

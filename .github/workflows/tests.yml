@@ -42,8 +42,5 @@ jobs:
       - name: Type Tests
         run: composer test:types
 
-      - name: Code Quality Tests
-        run: composer test:refactor
-
       - name: Unit Tests
         run: composer test:unit
