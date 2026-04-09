@@ -52,8 +52,10 @@ final class StandardOrder extends Order
             'tx_ref' => $this->reference,
             'callback_url' => $this->callbackUrl,
             'return_url' => $this->returnUrl,
-            'title' => $this->title ?? null,
-            'description' => $this->description ?? null,
+            'customization' => [
+                'title' => $this->title ?? null,
+                'description' => $this->description ?? null,
+            ],
             'customer' => $this->customer?->toArray() ?? null,
             'meta' => $this->meta ?? null,
             'uuid' => $this->uuid ?? null,

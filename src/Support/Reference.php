@@ -13,7 +13,7 @@ final readonly class Reference implements Stringable
     /**
      * The prefix of the reference.
      */
-    public readonly string $ref;
+    public string $ref;
 
     /**
      * Creates a new reference instance.

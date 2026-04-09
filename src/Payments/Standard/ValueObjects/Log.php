@@ -14,9 +14,9 @@ final readonly class Log
      * @param  string  $createdAt  The created at date of the log.
      */
     public function __construct(
-        public readonly string $type,
-        public readonly string $message,
-        public readonly string $createdAt,
+        public string $type,
+        public string $message,
+        public string $createdAt,
     ) {
         //
     }
